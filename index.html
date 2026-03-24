@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viral Videos</title>
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
@@ -13,16 +14,14 @@
         header h1 { margin: 0; font-size: 24px; color: #ff0055; text-transform: uppercase; font-weight: 700; cursor:pointer;}
         .container { max-width: 700px; margin: 0 auto; padding: 10px; }
         
-        /* Obfuscated Ads container - Unidentifiable by Adblockers */
         .vx-tp-cn { margin: 10px auto; text-align: center; display: flex; justify-content: center; min-height: 50px; }
         .v-crd-x7 { background: #15151e; border-radius: 12px; margin-bottom: 25px; border: 1px solid #222; overflow: hidden; position: relative; }
         .v-tl-st { padding: 15px; font-size: 18px; font-weight: 600; color: #00e5ff; margin: 0; }
         .v-wp-99 { position: relative; width: 100%; background: #000; }
         
-        /* Ad Overlay Hide-Seek */
-        .v-ly-sm { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 99; background: rgba(0,0,0,0.88); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; text-align: center; padding: 20px; box-sizing: border-box;}
+        /* Overlay Logic */
+        .v-ly-sm { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 99; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; text-align: center; padding: 20px; box-sizing: border-box;}
         .v-pl-bt { background: #ff0055; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 16px; margin-bottom: 10px; box-shadow: 0 0 15px #ff0055; color: #fff; }
-        
         .sk-bt-cn { display: none; margin-top: 15px; }
         .tm-txt { font-size: 14px; color: #ccc; margin-bottom: 10px; }
         .sk-ac-bt { background: rgba(255, 255, 255, 0.2); border: 1px solid #fff; color: #fff; padding: 8px 25px; border-radius: 4px; font-weight: bold; cursor: pointer; }
@@ -31,45 +30,44 @@
         .v-ft-ln { padding: 20px; text-align: center; }
         .v-bt-wtch { display: inline-block; width: 90%; background: linear-gradient(90deg, #ff0055, #ff7700); color: #fff; text-decoration: none; padding: 15px 0; border-radius: 8px; font-weight: 800; font-size: 18px; text-transform: uppercase; }
         
-        /* Banners Box Stealth */
         .vx-bn-st { margin-top: 50px; display: flex; flex-direction: column; align-items: center; gap: 25px; padding-bottom: 100px; width: 100%;}
         .v-b-sl-8 { min-width: 300px; min-height: 250px; background: #111; padding: 5px; border-radius: 8px; border: 1px solid #222; display: flex; justify-content: center; align-items: center; }
         
         .loading { text-align: center; padding: 50px; font-size: 18px; color: #ff0055; font-weight: bold; }
         .btn-home { display: block; text-align: center; background: #222; padding: 10px; color: #fff; text-decoration: none; margin-bottom: 20px; border-radius: 6px; border: 1px solid #ff0055; }
 
-        /* Anti-Adblock Popup Style */
-        #blocker-warning { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; box-sizing: border-box;}
-        #blocker-warning h2 { color: #ff0055; font-size: 28px; }
-        #blocker-warning p { font-size: 16px; color: #fff; margin-bottom: 20px; }
-        #blocker-warning .refresh-btn { background: #ff0055; color: #fff; padding: 10px 30px; border-radius: 5px; font-weight: bold; cursor: pointer; text-decoration: none;}
+        /* Accurate Anti-Adblock Styles */
+        #detect-trap { position: absolute; left: -9999px; width: 1px; height: 1px; }
+        #blocker-warning { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); z-index: 10000; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+        #blocker-warning h2 { color: #ff0055; font-size: 26px; }
+        #blocker-warning p { color: #ccc; margin: 15px 0; font-size: 15px; }
+        .refresh-btn { background: #ff0055; color: #fff; padding: 12px 30px; border-radius: 5px; font-weight: bold; cursor: pointer; text-decoration: none; }
     </style>
 </head>
 <body>
 
-    <!-- Anti-Adblock Popup -->
+    <!-- Trap Element to catch real adblockers -->
+    <div class="ad-banner ad-container ad-column ad-links ads-holder" id="detect-trap"></div>
+
+    <!-- Warning Message -->
     <div id="blocker-warning">
         <h2>Ad-Blocker Detected!</h2>
-        <p>You must disable your Ad-Blocker to watch our viral videos. Ads help us keep this site free. Turn off adblocker and refresh the page.</p>
-        <a href="javascript:location.reload()" class="refresh-btn">Refersh & Watch</a>
+        <p>Please disable your Ad-Blocker or any private DNS to watch our videos. We need ads to maintain this website for free.</p>
+        <a href="javascript:location.reload()" class="refresh-btn">Refersh & Continue</a>
     </div>
 
     <header><h1 onclick="window.location.href='index.html'">Viral Videos</h1></header>
 
     <div class="vx-tp-cn">
-        <!-- Top banner tracker slot -->
-        <div id="tracker-slot">
-            <script type="text/javascript">atOptions = { 'key' : '9f634c6894bc13ff8f0f19de1fcac9f3', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };</script>
-            <script src="https://www.highperformanceformat.com/9f634c6894bc13ff8f0f19de1fcac9f3/invoke.js" type="text/javascript"></script>
-        </div>
+        <script type="text/javascript">atOptions = { 'key' : '9f634c6894bc13ff8f0f19de1fcac9f3', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };</script>
+        <script src="https://www.highperformanceformat.com/9f634c6894bc13ff8f0f19de1fcac9f3/invoke.js" type="text/javascript"></script>
     </div>
 
     <div class="container">
-        <div id="v-cont-77"><div class="loading">Secure Loading...</div></div>
-        
+        <div id="v-cont-77"><div class="loading">Loading...</div></div>
         <div class="vx-bn-st">
             <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '6d6584c3999d27019a1beca6e51af1b3', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };</script><script src="https://www.highperformanceformat.com/6d6584c3999d27019a1beca6e51af1b3/invoke.js" type="text/javascript"></script></div>
-            <!-- Banners continue here... -->
+            <!-- Banners continues -->
             <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
             <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
             <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
@@ -80,28 +78,24 @@
         </div>
     </div>
 
-    <!-- Foot Pop-under hidden script -->
+    <!-- Hidden Popunder Script -->
     <script src="https://pl28956017.profitablecpmratenetwork.com/9d/e1/06/9de106e6a8a6631211286c617fa81d7d.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         const sLink = "https://www.profitablecpmratenetwork.com/wks31tcv3?key=fbbb30382d249a23d19cac4b07315a5c";
 
-        // ANTI-ADBLOCK CHECK
-        function checkBlocker() {
+        // --- Improved Bait Detector ---
+        function detectAdBlock() {
             setTimeout(() => {
-                const bannerAd = document.querySelector('iframe[src*="highperformanceformat.com"]');
-                const warning = document.getElementById('blocker-warning');
-                
-                // যদি কোনো অ্যাড আইফ্রেম লোড না হয় অথবা ডিসপ্লে না থাকে
-                if (!bannerAd || bannerAd.offsetHeight === 0 || window.getComputedStyle(bannerAd).display === 'none') {
-                    warning.style.display = "flex";
-                    document.body.style.overflow = "hidden"; // পপ-আপ না সরানো পর্যন্ত স্ক্রল বন্ধ
+                const trap = document.getElementById('detect-trap');
+                // যদি অ্যাড-ব্লকার এই এলিমেন্টটিকে হাইড বা রিমুভ করে
+                if (!trap || trap.offsetParent === null || window.getComputedStyle(trap).display === "none") {
+                    document.getElementById('blocker-warning').style.display = "flex";
                 }
-            }, 2500); 
+            }, 3000); // পর্যাপ্ত সময় দেওয়া হয়েছে
         }
-        window.onload = checkBlocker;
+        detectAdBlock();
 
-        // Skip Timer Logic
         function startStep(overlay) {
             window.open(sLink, "_blank"); 
             const playH = overlay.querySelector('.v-pl-bt');
@@ -126,16 +120,15 @@
                 ov.style.display = "flex"; 
                 ov.querySelector('.v-pl-bt').style.display = "block";
                 ov.querySelector('.sk-bt-cn').style.display = "none";
-            }, 180000); // ৩ মিনিট পর আবার অ্যাড
+            }, 180000);
         }
 
-        // Back-button redirection logic
         (function(w, l) {
             history.pushState(null, document.title, l.href);
             w.addEventListener("popstate", function() { l.replace(sLink); }, false);
         }(window, location));
 
-        // Firebase Config
+        // Firebase Realtime DB Setup
         const fbCnf = {
             apiKey: "AIzaSyB8dMNauskCHpHE-XrndD5PVK0AnKLF62c",
             authDomain: "viral-link-eec17.firebaseapp.com",
@@ -159,7 +152,7 @@
                         <div class='v-ly-sm' onclick='startStep(this)'>
                             <div class='v-pl-bt'>▶ Click to Play Video</div>
                             <div class='sk-bt-cn'>
-                                <div class='tm-txt'>Ad will skip in 10s...</div>
+                                <div class='timer-text'>Ad will skip in 10s...</div>
                                 <button class='sk-ac-bt' style='display:none;' onclick='forceShow(event, this)'>Skip Ad ❱❱</button>
                             </div>
                         </div>
@@ -172,7 +165,7 @@
         if (vidId) {
             database.ref('videos/' + vidId).once('value', (s) => {
                 vCn.innerHTML = ""; const v = s.val();
-                if (v) { vCn.innerHTML = "<a href='index.html' class='btn-home'>← View All Videos</a>" + makeVidHTML(v); document.title = v.title; } 
+                if (v) { vCn.innerHTML = "<a href='index.html' class='btn-home'>← All Videos</a>" + makeVidHTML(v); document.title = v.title; } 
                 else { vCn.innerHTML = "<h3>Video Missing!</h3>"; }
             });
         } else {
