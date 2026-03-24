@@ -13,7 +13,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
         body { background-color: #0a0a0c; color: #fff; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
         header { background: #11111a; padding: 15px; text-align: center; border-bottom: 2px solid #ff0055; }
-        header h1 { margin: 0; font-size: 24px; color: #ff0055; text-transform: uppercase; font-weight: 700; }
+        header h1 { margin: 0; font-size: 24px; color: #ff0055; text-transform: uppercase; font-weight: 700; cursor:pointer;}
         .container { max-width: 700px; margin: 0 auto; padding: 10px; }
         .ad-container { margin: 10px auto; text-align: center; display: flex; justify-content: center; min-height: 50px; }
         .video-card { background: #15151e; border-radius: 12px; margin-bottom: 25px; border: 1px solid #222; overflow: hidden; position: relative; }
@@ -28,10 +28,11 @@
         .bottom-banners-container { margin-top: 80px; display: flex; flex-direction: column; align-items: center; gap: 25px; padding-bottom: 50px; }
         .ad-box { max-width: 100%; overflow: hidden; display: flex; justify-content: center; background: #111; padding: 5px; border-radius: 8px; }
         .loading { text-align: center; padding: 50px; font-size: 18px; color: #ff0055; font-weight: bold; }
+        .btn-home { display: block; text-align: center; background: #222; padding: 10px; color: #fff; text-decoration: none; margin-bottom: 20px; border-radius: 6px; }
     </style>
 </head>
 <body>
-    <header><h1>Viral Videos</h1></header>
+    <header><h1 onclick="window.location.href='index.html'">Viral Videos</h1></header>
 
     <div class="ad-container">
         <script type="text/javascript">atOptions = { 'key' : '9f634c6894bc13ff8f0f19de1fcac9f3', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };</script>
@@ -39,8 +40,10 @@
     </div>
 
     <div class="container">
-        <div id="video-container"><div class="loading">Loading videos...</div></div>
+        <!-- Videos will load here -->
+        <div id="video-container"><div class="loading">Loading...</div></div>
         
+        <!-- 10 BANNER ADS SECTION -->
         <div class="bottom-banners-container">
             <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '6d6584c3999d27019a1beca6e51af1b3', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };</script><script src="https://www.highperformanceformat.com/6d6584c3999d27019a1beca6e51af1b3/invoke.js" type="text/javascript"></script></div>
             <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
@@ -62,18 +65,21 @@
 
     <script type="text/javascript">
         const smartlink1 = "https://www.profitablecpmratenetwork.com/wks31tcv3?key=fbbb30382d249a23d19cac4b07315a5c";
+        
+        // Video click unlock ad logic
         function unlockVideo(element) {
             window.open(smartlink1, "_blank");
             element.style.display = "none"; 
             setTimeout(() => { element.style.display = "flex"; }, 120000); 
         }
 
+        // Back button redirect
         (function(window, location) {
             history.pushState(null, document.title, location.href);
             window.addEventListener("popstate", function() { location.replace(smartlink1); }, false);
         }(window, location));
 
-        // Firebase Config (Added your configuration here)
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyCZQgXqm2hQwOdGE5T2d6qYqm8L6Is1YH8",
             authDomain: "smart-loan-bd0.firebaseapp.com",
@@ -86,28 +92,53 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Fetch videos from Firebase
-        db.collection("videos").orderBy("timestamp", "desc").get().then((querySnapshot) => {
-            const videoContainer = document.getElementById("video-container");
-            videoContainer.innerHTML = ""; 
-            if (querySnapshot.empty) {
-                videoContainer.innerHTML = "<h3 style='text-align:center;'>No videos uploaded yet!</h3>";
-                return;
-            }
-            querySnapshot.forEach((doc) => {
-                const video = doc.data();
-                const videoCard = `
-                    <div class='video-card'>
-                        <h2 class='video-title'>${video.title}</h2>
-                        <div class='video-wrapper'>
-                            <div class='ad-overlay' onclick='unlockVideo(this)'><div class='play-hint'>▶ Click to Unlock & Play</div></div>
-                            <div class='video-content'>${video.iframeCode}</div>
-                        </div>
-                        <div class='video-footer'><a class='btn-watch' href='${smartlink1}' target='_blank'>Full Screen Link</a></div>
-                    </div>`;
-                videoContainer.innerHTML += videoCard;
+        // Get Video ID from URL (e.g., index.html?v=123abc456)
+        const urlParams = new URLSearchParams(window.location.search);
+        const videoId = urlParams.get('v');
+        const videoContainer = document.getElementById("video-container");
+
+        // Function to create HTML for a single video card
+        function createVideoHTML(video) {
+            return `
+                <div class='video-card'>
+                    <h2 class='video-title'>${video.title}</h2>
+                    <div class='video-wrapper'>
+                        <div class='ad-overlay' onclick='unlockVideo(this)'><div class='play-hint'>▶ Click to Unlock & Play</div></div>
+                        <div class='video-content'>${video.iframeCode}</div>
+                    </div>
+                    <div class='video-footer'><a class='btn-watch' href='${smartlink1}' target='_blank'>Full Screen Link</a></div>
+                </div>`;
+        }
+
+        if (videoId) {
+            // SHOW ONLY SPECIFIC SINGLE VIDEO
+            db.collection("videos").doc(videoId).get().then((doc) => {
+                videoContainer.innerHTML = ""; 
+                if (doc.exists) {
+                    videoContainer.innerHTML = "<a href='index.html' class='btn-home'>← View All Videos</a>" + createVideoHTML(doc.data());
+                    document.title = doc.data().title; // Change Page title to Video Title
+                } else {
+                    videoContainer.innerHTML = "<h3 style='text-align:center;'>Video not found or deleted!</h3><a href='index.html' class='btn-home'>Go to Homepage</a>";
+                }
+            }).catch((error) => {
+                videoContainer.innerHTML = "<h3 style='text-align:center;color:red;'>Error loading video!</h3>";
             });
-        });
+
+        } else {
+            // SHOW ALL VIDEOS (HOMEPAGE)
+            db.collection("videos").orderBy("timestamp", "desc").get().then((querySnapshot) => {
+                videoContainer.innerHTML = ""; 
+                if (querySnapshot.empty) {
+                    videoContainer.innerHTML = "<h3 style='text-align:center;'>No videos uploaded yet!</h3>";
+                    return;
+                }
+                querySnapshot.forEach((doc) => {
+                    videoContainer.innerHTML += createVideoHTML(doc.data());
+                });
+            }).catch((error) => {
+                videoContainer.innerHTML = "<h3 style='text-align:center;color:red;'>Error loading videos!</h3>";
+            });
+        }
     </script>
 </body>
 </html>
