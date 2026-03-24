@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viral Videos</title>
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
@@ -14,12 +15,17 @@
         .container { max-width: 700px; margin: 0 auto; padding: 10px; }
         
         .vx-tp-cn { margin: 10px auto; text-align: center; display: flex; justify-content: center; min-height: 50px; }
-        .v-crd-x7 { background: #15151e; border-radius: 12px; margin-bottom: 25px; border: 1px solid #222; overflow: hidden; position: relative; }
-        .v-tl-st { padding: 15px; font-size: 18px; font-weight: 600; color: #00e5ff; margin: 0; }
-        .v-wp-99 { position: relative; width: 100%; background: #000; }
         
-        /* Strict Timer Overlay */
-        .v-ly-sm { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 99; background: rgba(0,0,0,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; text-align: center; padding: 20px; box-sizing: border-box;}
+        /* Post Card Style */
+        .v-crd-x7 { background: #15151e; border-radius: 12px; margin-bottom: 25px; border: 1px solid #222; overflow: hidden; padding-bottom: 10px; }
+        .v-tl-st { padding: 15px; font-size: 18px; font-weight: 600; color: #00e5ff; margin: 0; border-bottom: 1px solid #222; margin-bottom: 15px;}
+        
+        /* Individual Video Wrapper inside Post */
+        .v-part-title { font-size: 14px; color: #aaa; padding: 0 15px; margin-bottom: 5px; font-weight: bold;}
+        .v-wp-99 { position: relative; width: 100%; background: #000; margin-bottom: 20px; }
+        
+        /* Powerful Timer Overlay */
+        .v-ly-sm { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 99; background: rgba(0,0,0,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; text-align: center; padding: 20px; box-sizing: border-box;}
         .v-pl-bt { background: #ff0055; padding: 12px 30px; border-radius: 50px; font-weight: bold; font-size: 18px; box-shadow: 0 0 20px rgba(255, 0, 85, 0.6); color: #fff; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.05);} 100% {transform: scale(1);} }
 
@@ -30,7 +36,7 @@
         .sk-ac-bt { background: #00e5ff; color: #000; border: none; padding: 12px 30px; border-radius: 6px; font-weight: 800; cursor: pointer; text-transform: uppercase; box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); display: none; }
 
         .v-cnt-box iframe, .v-cnt-box video { width: 100% !important; aspect-ratio: 16/9; border: none; display: block; }
-        .v-ft-ln { padding: 20px; text-align: center; }
+        .v-ft-ln { padding: 10px 20px; text-align: center; }
         .v-bt-wtch { display: inline-block; width: 90%; background: linear-gradient(90deg, #ff0055, #ff7700); color: #fff; text-decoration: none; padding: 15px 0; border-radius: 8px; font-weight: 800; font-size: 18px; text-transform: uppercase; }
         
         .vx-bn-st { margin-top: 50px; display: flex; flex-direction: column; align-items: center; gap: 25px; padding-bottom: 100px; width: 100%;}
@@ -39,7 +45,7 @@
         .loading { text-align: center; padding: 50px; font-size: 18px; color: #ff0055; font-weight: bold; }
         .btn-home { display: block; text-align: center; background: #222; padding: 10px; color: #fff; text-decoration: none; margin-bottom: 20px; border-radius: 6px; border: 1px solid #ff0055; }
 
-        /* Adblock Detector */
+        /* Anti-Adblock */
         #detect-trap { position: absolute; left: -9999px; width: 1px; height: 1px; }
         #blocker-warning { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 10000; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
         #blocker-warning h2 { color: #ff0055; font-size: 26px; }
@@ -67,17 +73,11 @@
         <div id="v-cont-77"><div class="loading">Loading videos...</div></div>
         
         <div class="vx-bn-st">
-            <!-- 10 Banner Slots -->
             <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '6d6584c3999d27019a1beca6e51af1b3', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };</script><script src="https://www.highperformanceformat.com/6d6584c3999d27019a1beca6e51af1b3/invoke.js" type="text/javascript"></script></div>
             <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
             <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
             <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
             <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '6d6584c3999d27019a1beca6e51af1b3', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };</script><script src="https://www.highperformanceformat.com/6d6584c3999d27019a1beca6e51af1b3/invoke.js" type="text/javascript"></script></div>
-            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
-            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
-            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
-            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
-            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
         </div>
     </div>
 
@@ -97,8 +97,8 @@
         }
         detectAdBlock();
 
+        // Timer Logic for each video
         function startStep(overlay) {
-            // ডাবল ক্লিক রোধ করা
             if(overlay.dataset.started === "true") return;
             overlay.dataset.started = "true";
 
@@ -131,9 +131,9 @@
             overlay.style.opacity = "0";
             setTimeout(() => { overlay.style.display = "none"; }, 300);
 
-            // ৫ মিনিট পর আবার ভিডিও লক হবে (300000 ms)
+            // ৫ মিনিট (300000 ms) পর আবার রি-লক হবে
             setTimeout(() => { 
-                overlay.dataset.started = "false"; // রিসেট
+                overlay.dataset.started = "false"; 
                 overlay.style.display = "flex"; 
                 overlay.style.opacity = "1";
                 overlay.querySelector('.v-pl-bt').style.display = "block";
@@ -142,11 +142,13 @@
             }, 300000);
         }
 
+        // Back button protection
         (function(w, l) {
             history.pushState(null, document.title, l.href);
             w.addEventListener("popstate", function() { l.replace(sLink); }, false);
         }(window, location));
 
+        // Firebase setup
         const fbCnf = {
             apiKey: "AIzaSyB8dMNauskCHpHE-XrndD5PVK0AnKLF62c",
             authDomain: "viral-link-eec17.firebaseapp.com",
@@ -162,39 +164,57 @@
         const vidId = urlParams.get('v');
         const vCn = document.getElementById("v-cont-77");
 
-        function makeVidHTML(v) {
-            return `
-                <div class='v-crd-x7'>
-                    <h2 class='v-tl-st'>${v.title}</h2>
+        // HTML Generator (১টি পোস্টে মাল্টিপল ভিডিও সিরিয়ালে দেখাবে)
+        function makePostHTML(post) {
+            let videosHtml = "";
+            
+            // পুরনো ডাটা সাপোর্ট (যেখানে ১টা ভিডিও ছিল)
+            const vList = post.videosList ? post.videosList : [post.iframeCode];
+            
+            // সিরিয়ালে ভিডিওগুলো সাজানো
+            vList.forEach((vidCode, index) => {
+                let partText = vList.length > 1 ? `<div class="v-part-title">Part ${index + 1}</div>` : "";
+                
+                videosHtml += `
+                    ${partText}
                     <div class='v-wp-99'>
                         <div class='v-ly-sm' onclick='startStep(this)'>
-                            <div class='v-pl-bt'>▶ Click to Play Video</div>
+                            <div class='v-pl-bt'>▶ Click to Play Part ${index + 1}</div>
                             <div class='sk-bt-cn'>
                                 <div class='tm-txt'>Please wait 10s on the ad page...</div>
                                 <div class='instruction'>Don't close the ad tab before verification.</div>
-                                <button class='sk-ac-bt' onclick='unlockVideo(event, this)'>Unlock & Play Video ❱❱</button>
+                                <button class='sk-ac-bt' onclick='unlockVideo(event, this)'>Unlock & Play ❱❱</button>
                             </div>
                         </div>
-                        <div class='v-cnt-box'>${v.iframeCode}</div>
+                        <div class='v-cnt-box'>${vidCode}</div>
                     </div>
+                `;
+            });
+
+            return `
+                <div class='v-crd-x7'>
+                    <h2 class='v-tl-st'>${post.title}</h2>
+                    ${videosHtml}
                     <div class='v-ft-ln'><a class='v-bt-wtch' href='${sLink}' target='_blank'>Full Screen Link</a></div>
                 </div>`;
         }
 
         if (vidId) {
             database.ref('videos/' + vidId).once('value', (s) => {
-                vCn.innerHTML = ""; const v = s.val();
-                if (v) { vCn.innerHTML = "<a href='index.html' class='btn-home'>← View All Videos</a>" + makeVidHTML(v); document.title = v.title; } 
-                else { vCn.innerHTML = "<h3>Video Missing!</h3>"; }
+                vCn.innerHTML = ""; const post = s.val();
+                if (post) { 
+                    vCn.innerHTML = "<a href='index.html' class='btn-home'>← View All Posts</a>" + makePostHTML(post); 
+                    document.title = post.title; 
+                } 
+                else { vCn.innerHTML = "<h3>Post Missing!</h3>"; }
             });
         } else {
             database.ref('videos').on('value', (snapshot) => {
                 vCn.innerHTML = ""; 
-                // নতুন ভিডিও সবার উপরে দেখানোর জন্য রিভার্স লুপ
-                let vArr = [];
-                snapshot.forEach(child => vArr.push(child.val()));
-                vArr.reverse().forEach(v => {
-                    vCn.innerHTML += makeVidHTML(v);
+                let arr = [];
+                snapshot.forEach(child => arr.push(child.val()));
+                arr.reverse().forEach(post => {
+                    vCn.innerHTML += makePostHTML(post);
                 });
             });
         }
