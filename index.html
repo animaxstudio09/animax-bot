@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viral Videos</title>
-    <!-- Firebase Realtime Database SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <style>
@@ -17,9 +16,17 @@
         .video-card { background: #15151e; border-radius: 12px; margin-bottom: 25px; border: 1px solid #222; overflow: hidden; position: relative; }
         .video-title { padding: 15px; font-size: 18px; font-weight: 600; color: #00e5ff; margin: 0; }
         .video-wrapper { position: relative; width: 100%; background: #000; }
-        .ad-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 99; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .play-hint { background: rgba(255, 0, 85, 0.8); padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 14px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.1);} 100% {transform: scale(1);} }
+        
+        /* Ad Overlay Logic */
+        .ad-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 99; background: rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        .play-hint { background: #ff0055; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 16px; margin-bottom: 10px; box-shadow: 0 0 15px #ff0055; }
+        
+        /* Skip Ad Button */
+        .skip-container { display: none; margin-top: 15px; }
+        .timer-text { font-size: 14px; color: #ccc; }
+        .btn-skip { background: rgba(255, 255, 255, 0.2); border: 1px solid #fff; color: #fff; padding: 8px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        .btn-skip:hover { background: #fff; color: #000; }
+
         .video-content iframe, .video-content video { width: 100% !important; aspect-ratio: 16/9; border: none; display: block; }
         .video-footer { padding: 20px; text-align: center; }
         .btn-watch { display: inline-block; width: 90%; background: linear-gradient(90deg, #ff0055, #ff7700); color: #fff; text-decoration: none; padding: 15px 0; border-radius: 8px; font-weight: 800; font-size: 18px; text-transform: uppercase; }
@@ -32,18 +39,16 @@
 <body>
     <header><h1 onclick="window.location.href='index.html'">Viral Videos</h1></header>
 
-    <!-- Top Banner -->
     <div class="ad-container">
         <script type="text/javascript">atOptions = { 'key' : '9f634c6894bc13ff8f0f19de1fcac9f3', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };</script>
         <script src="https://www.highperformanceformat.com/9f634c6894bc13ff8f0f19de1fcac9f3/invoke.js" type="text/javascript"></script>
     </div>
 
     <div class="container">
-        <!-- Videos will load here -->
         <div id="video-container"><div class="loading">Loading videos...</div></div>
         
-        <!-- 10 BANNER ADS SECTION -->
         <div class="bottom-banners-container">
+            <!-- 10 Ads Slote -->
             <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '6d6584c3999d27019a1beca6e51af1b3', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };</script><script src="https://www.highperformanceformat.com/6d6584c3999d27019a1beca6e51af1b3/invoke.js" type="text/javascript"></script></div>
             <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
             <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
@@ -65,18 +70,51 @@
     <script type="text/javascript">
         const smartlink = "https://www.profitablecpmratenetwork.com/wks31tcv3?key=fbbb30382d249a23d19cac4b07315a5c";
         
-        function unlockVideo(element) {
-            window.open(smartlink, "_blank");
-            element.style.display = "none"; 
-            setTimeout(() => { element.style.display = "flex"; }, 120000); 
+        // Timer Logic for Skip Ad
+        function startSkipTimer(cardElement) {
+            window.open(smartlink, "_blank"); // Open Ad on First Click
+            
+            const overlay = cardElement;
+            const playBtn = overlay.querySelector('.play-hint');
+            const skipContainer = overlay.querySelector('.skip-container');
+            const timerText = overlay.querySelector('.timer-text');
+            const skipBtn = overlay.querySelector('.btn-skip');
+
+            playBtn.style.display = "none";
+            skipContainer.style.display = "block";
+
+            let seconds = 10;
+            const interval = setInterval(() => {
+                seconds--;
+                if (seconds > 0) {
+                    timerText.innerText = `Ad will skip in ${seconds}s...`;
+                } else {
+                    clearInterval(interval);
+                    timerText.style.display = "none";
+                    skipBtn.style.display = "inline-block";
+                }
+            }, 1000);
         }
 
+        function removeOverlay(btn) {
+            event.stopPropagation();
+            const overlay = btn.closest('.ad-overlay');
+            overlay.style.display = "none";
+            // Re-show ad after 2 minutes (optional)
+            setTimeout(() => { 
+                overlay.style.display = "flex"; 
+                overlay.querySelector('.play-hint').style.display = "block";
+                overlay.querySelector('.skip-container').style.display = "none";
+            }, 120000);
+        }
+
+        // Back button redirect
         (function(window, location) {
             history.pushState(null, document.title, location.href);
             window.addEventListener("popstate", function() { location.replace(smartlink); }, false);
         }(window, location));
 
-        // 🔥 Final Realtime Database Config
+        // Firebase Setup
         const firebaseConfig = {
             apiKey: "AIzaSyB8dMNauskCHpHE-XrndD5PVK0AnKLF62c",
             authDomain: "viral-link-eec17.firebaseapp.com",
@@ -98,7 +136,13 @@
                 <div class='video-card'>
                     <h2 class='video-title'>${video.title}</h2>
                     <div class='video-wrapper'>
-                        <div class='ad-overlay' onclick='unlockVideo(this)'><div class='play-hint'>▶ Click to Unlock & Play</div></div>
+                        <div class='ad-overlay' onclick='startSkipTimer(this)'>
+                            <div class='play-hint'>▶ Click to Play Video</div>
+                            <div class='skip-container'>
+                                <div class='timer-text'>Ad will skip in 10s...</div>
+                                <button class='btn-skip' style='display:none;' onclick='removeOverlay(this)'>Skip Ad ❱❱</button>
+                            </div>
+                        </div>
                         <div class='video-content'>${video.iframeCode}</div>
                     </div>
                     <div class='video-footer'><a class='btn-watch' href='${smartlink}' target='_blank'>Full Screen Link</a></div>
@@ -106,7 +150,6 @@
         }
 
         if (videoId) {
-            // লিংকে ভিডিও আইডি থাকলে শুধু একটা ভিডিও দেখাবে
             database.ref('videos/' + videoId).once('value', (snapshot) => {
                 videoContainer.innerHTML = ""; 
                 const video = snapshot.val();
@@ -114,22 +157,14 @@
                     videoContainer.innerHTML = "<a href='index.html' class='btn-home'>← View All Videos</a>" + createVideoHTML(video);
                     document.title = video.title;
                 } else {
-                    videoContainer.innerHTML = "<h3 style='text-align:center;'>Video not found!</h3><a href='index.html' class='btn-home'>Go to Homepage</a>";
+                    videoContainer.innerHTML = "<h3>Video not found!</h3>";
                 }
-            }, (error) => {
-                videoContainer.innerHTML = "<h3 style='text-align:center;color:red;'>Error loading video!</h3>";
             });
         } else {
-            // লিংকে আইডি না থাকলে সব ভিডিও দেখাবে
-            database.ref('videos').orderByChild('timestamp').on('value', (snapshot) => {
+            database.ref('videos').on('value', (snapshot) => {
                 videoContainer.innerHTML = ""; 
-                if (!snapshot.exists()) {
-                    videoContainer.innerHTML = "<h3 style='text-align:center;'>No videos uploaded yet!</h3>";
-                    return;
-                }
                 snapshot.forEach((childSnapshot) => {
-                    const video = childSnapshot.val();
-                    videoContainer.innerHTML = createVideoHTML(video) + videoContainer.innerHTML;
+                    videoContainer.innerHTML = createVideoHTML(childSnapshot.val()) + videoContainer.innerHTML;
                 });
             });
         }
