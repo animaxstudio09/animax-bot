@@ -12,110 +12,131 @@
         header { background: #11111a; padding: 15px; text-align: center; border-bottom: 2px solid #ff0055; }
         header h1 { margin: 0; font-size: 24px; color: #ff0055; text-transform: uppercase; font-weight: 700; cursor:pointer;}
         .container { max-width: 700px; margin: 0 auto; padding: 10px; }
-        .ad-container { margin: 10px auto; text-align: center; display: flex; justify-content: center; min-height: 50px; }
-        .video-card { background: #15151e; border-radius: 12px; margin-bottom: 25px; border: 1px solid #222; overflow: hidden; position: relative; }
-        .video-title { padding: 15px; font-size: 18px; font-weight: 600; color: #00e5ff; margin: 0; }
-        .video-wrapper { position: relative; width: 100%; background: #000; }
         
-        /* Ad Overlay Logic */
-        .ad-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 99; background: rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
-        .play-hint { background: #ff0055; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 16px; margin-bottom: 10px; box-shadow: 0 0 15px #ff0055; }
+        /* Obfuscated Ads container - Unidentifiable by Adblockers */
+        .vx-tp-cn { margin: 10px auto; text-align: center; display: flex; justify-content: center; min-height: 50px; }
+        .v-crd-x7 { background: #15151e; border-radius: 12px; margin-bottom: 25px; border: 1px solid #222; overflow: hidden; position: relative; }
+        .v-tl-st { padding: 15px; font-size: 18px; font-weight: 600; color: #00e5ff; margin: 0; }
+        .v-wp-99 { position: relative; width: 100%; background: #000; }
         
-        /* Skip Ad Button */
-        .skip-container { display: none; margin-top: 15px; }
-        .timer-text { font-size: 14px; color: #ccc; }
-        .btn-skip { background: rgba(255, 255, 255, 0.2); border: 1px solid #fff; color: #fff; padding: 8px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
-        .btn-skip:hover { background: #fff; color: #000; }
+        /* Ad Overlay Hide-Seek */
+        .v-ly-sm { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 99; background: rgba(0,0,0,0.88); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; text-align: center; padding: 20px; box-sizing: border-box;}
+        .v-pl-bt { background: #ff0055; padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 16px; margin-bottom: 10px; box-shadow: 0 0 15px #ff0055; color: #fff; }
+        
+        .sk-bt-cn { display: none; margin-top: 15px; }
+        .tm-txt { font-size: 14px; color: #ccc; margin-bottom: 10px; }
+        .sk-ac-bt { background: rgba(255, 255, 255, 0.2); border: 1px solid #fff; color: #fff; padding: 8px 25px; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-        .video-content iframe, .video-content video { width: 100% !important; aspect-ratio: 16/9; border: none; display: block; }
-        .video-footer { padding: 20px; text-align: center; }
-        .btn-watch { display: inline-block; width: 90%; background: linear-gradient(90deg, #ff0055, #ff7700); color: #fff; text-decoration: none; padding: 15px 0; border-radius: 8px; font-weight: 800; font-size: 18px; text-transform: uppercase; }
-        .bottom-banners-container { margin-top: 80px; display: flex; flex-direction: column; align-items: center; gap: 25px; padding-bottom: 50px; }
-        .ad-box { max-width: 100%; overflow: hidden; display: flex; justify-content: center; background: #111; padding: 5px; border-radius: 8px; }
+        .v-cnt-box iframe, .v-cnt-box video { width: 100% !important; aspect-ratio: 16/9; border: none; display: block; }
+        .v-ft-ln { padding: 20px; text-align: center; }
+        .v-bt-wtch { display: inline-block; width: 90%; background: linear-gradient(90deg, #ff0055, #ff7700); color: #fff; text-decoration: none; padding: 15px 0; border-radius: 8px; font-weight: 800; font-size: 18px; text-transform: uppercase; }
+        
+        /* Banners Box Stealth */
+        .vx-bn-st { margin-top: 50px; display: flex; flex-direction: column; align-items: center; gap: 25px; padding-bottom: 100px; width: 100%;}
+        .v-b-sl-8 { min-width: 300px; min-height: 250px; background: #111; padding: 5px; border-radius: 8px; border: 1px solid #222; display: flex; justify-content: center; align-items: center; }
+        
         .loading { text-align: center; padding: 50px; font-size: 18px; color: #ff0055; font-weight: bold; }
         .btn-home { display: block; text-align: center; background: #222; padding: 10px; color: #fff; text-decoration: none; margin-bottom: 20px; border-radius: 6px; border: 1px solid #ff0055; }
+
+        /* Anti-Adblock Popup Style */
+        #blocker-warning { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; box-sizing: border-box;}
+        #blocker-warning h2 { color: #ff0055; font-size: 28px; }
+        #blocker-warning p { font-size: 16px; color: #fff; margin-bottom: 20px; }
+        #blocker-warning .refresh-btn { background: #ff0055; color: #fff; padding: 10px 30px; border-radius: 5px; font-weight: bold; cursor: pointer; text-decoration: none;}
     </style>
 </head>
 <body>
-    <header><h1 onclick="window.location.href='index.html'">Viral Videos</h1></header>
 
-    <div class="ad-container">
-        <script type="text/javascript">atOptions = { 'key' : '9f634c6894bc13ff8f0f19de1fcac9f3', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };</script>
-        <script src="https://www.highperformanceformat.com/9f634c6894bc13ff8f0f19de1fcac9f3/invoke.js" type="text/javascript"></script>
+    <!-- Anti-Adblock Popup -->
+    <div id="blocker-warning">
+        <h2>Ad-Blocker Detected!</h2>
+        <p>You must disable your Ad-Blocker to watch our viral videos. Ads help us keep this site free. Turn off adblocker and refresh the page.</p>
+        <a href="javascript:location.reload()" class="refresh-btn">Refersh & Watch</a>
     </div>
 
-    <div class="container">
-        <div id="video-container"><div class="loading">Loading videos...</div></div>
-        
-        <div class="bottom-banners-container">
-            <!-- 10 Ads Slote -->
-            <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '6d6584c3999d27019a1beca6e51af1b3', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };</script><script src="https://www.highperformanceformat.com/6d6584c3999d27019a1beca6e51af1b3/invoke.js" type="text/javascript"></script></div>
-            <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
-            <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
-            <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
-            <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
-            <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '6d6584c3999d27019a1beca6e51af1b3', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };</script><script src="https://www.highperformanceformat.com/6d6584c3999d27019a1beca6e51af1b3/invoke.js" type="text/javascript"></script></div>
-            <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
-            <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
-            <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
-            <div class="ad-box"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
+    <header><h1 onclick="window.location.href='index.html'">Viral Videos</h1></header>
+
+    <div class="vx-tp-cn">
+        <!-- Top banner tracker slot -->
+        <div id="tracker-slot">
+            <script type="text/javascript">atOptions = { 'key' : '9f634c6894bc13ff8f0f19de1fcac9f3', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };</script>
+            <script src="https://www.highperformanceformat.com/9f634c6894bc13ff8f0f19de1fcac9f3/invoke.js" type="text/javascript"></script>
         </div>
     </div>
 
-    <!-- Ad Scripts -->
-    <script src="https://pl28670634.effectivegatecpm.com/2f/28/1a/2f281ac58d64e6a580eb2d4171fe33d7.js" type="text/javascript"></script>
-    <script src="https://pl28670723.effectivegatecpm.com/66/84/a1/6684a1bcf20a187f5844b6e689ba4482.js" type="text/javascript"></script>
+    <div class="container">
+        <div id="v-cont-77"><div class="loading">Secure Loading...</div></div>
+        
+        <div class="vx-bn-st">
+            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '6d6584c3999d27019a1beca6e51af1b3', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };</script><script src="https://www.highperformanceformat.com/6d6584c3999d27019a1beca6e51af1b3/invoke.js" type="text/javascript"></script></div>
+            <!-- Banners continue here... -->
+            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
+            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
+            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
+            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '6d6584c3999d27019a1beca6e51af1b3', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };</script><script src="https://www.highperformanceformat.com/6d6584c3999d27019a1beca6e51af1b3/invoke.js" type="text/javascript"></script></div>
+            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
+            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
+            <div class="v-b-sl-8"><script type="text/javascript">atOptions = { 'key' : '39cde31d7d706be7daf685e656cc7941', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script><script src="https://www.highperformanceformat.com/39cde31d7d706be7daf685e656cc7941/invoke.js" type="text/javascript"></script></div>
+        </div>
+    </div>
+
+    <!-- Foot Pop-under hidden script -->
     <script src="https://pl28956017.profitablecpmratenetwork.com/9d/e1/06/9de106e6a8a6631211286c617fa81d7d.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-        const smartlink = "https://www.profitablecpmratenetwork.com/wks31tcv3?key=fbbb30382d249a23d19cac4b07315a5c";
-        
-        // Timer Logic for Skip Ad
-        function startSkipTimer(cardElement) {
-            window.open(smartlink, "_blank"); // Open Ad on First Click
-            
-            const overlay = cardElement;
-            const playBtn = overlay.querySelector('.play-hint');
-            const skipContainer = overlay.querySelector('.skip-container');
-            const timerText = overlay.querySelector('.timer-text');
-            const skipBtn = overlay.querySelector('.btn-skip');
+        const sLink = "https://www.profitablecpmratenetwork.com/wks31tcv3?key=fbbb30382d249a23d19cac4b07315a5c";
 
-            playBtn.style.display = "none";
-            skipContainer.style.display = "block";
-
-            let seconds = 10;
-            const interval = setInterval(() => {
-                seconds--;
-                if (seconds > 0) {
-                    timerText.innerText = `Ad will skip in ${seconds}s...`;
-                } else {
-                    clearInterval(interval);
-                    timerText.style.display = "none";
-                    skipBtn.style.display = "inline-block";
+        // ANTI-ADBLOCK CHECK
+        function checkBlocker() {
+            setTimeout(() => {
+                const bannerAd = document.querySelector('iframe[src*="highperformanceformat.com"]');
+                const warning = document.getElementById('blocker-warning');
+                
+                // যদি কোনো অ্যাড আইফ্রেম লোড না হয় অথবা ডিসপ্লে না থাকে
+                if (!bannerAd || bannerAd.offsetHeight === 0 || window.getComputedStyle(bannerAd).display === 'none') {
+                    warning.style.display = "flex";
+                    document.body.style.overflow = "hidden"; // পপ-আপ না সরানো পর্যন্ত স্ক্রল বন্ধ
                 }
+            }, 2500); 
+        }
+        window.onload = checkBlocker;
+
+        // Skip Timer Logic
+        function startStep(overlay) {
+            window.open(sLink, "_blank"); 
+            const playH = overlay.querySelector('.v-pl-bt');
+            const skipCn = overlay.querySelector('.sk-bt-cn');
+            const tmTxt = overlay.querySelector('.tm-txt');
+            const skBt = overlay.querySelector('.sk-ac-bt');
+            playH.style.display = "none";
+            skipCn.style.display = "block";
+            let s = 10;
+            const iv = setInterval(() => {
+                s--;
+                if (s > 0) { tmTxt.innerText = `Ad will skip in ${s}s...`; } 
+                else { clearInterval(iv); tmTxt.style.display = "none"; skBt.style.display = "inline-block"; }
             }, 1000);
         }
 
-        function removeOverlay(btn) {
+        function forceShow(event, btn) {
             event.stopPropagation();
-            const overlay = btn.closest('.ad-overlay');
-            overlay.style.display = "none";
-            // Re-show ad after 2 minutes (optional)
+            const ov = btn.closest('.v-ly-sm');
+            ov.style.display = "none";
             setTimeout(() => { 
-                overlay.style.display = "flex"; 
-                overlay.querySelector('.play-hint').style.display = "block";
-                overlay.querySelector('.skip-container').style.display = "none";
-            }, 120000);
+                ov.style.display = "flex"; 
+                ov.querySelector('.v-pl-bt').style.display = "block";
+                ov.querySelector('.sk-bt-cn').style.display = "none";
+            }, 180000); // ৩ মিনিট পর আবার অ্যাড
         }
 
-        // Back button redirect
-        (function(window, location) {
-            history.pushState(null, document.title, location.href);
-            window.addEventListener("popstate", function() { location.replace(smartlink); }, false);
+        // Back-button redirection logic
+        (function(w, l) {
+            history.pushState(null, document.title, l.href);
+            w.addEventListener("popstate", function() { l.replace(sLink); }, false);
         }(window, location));
 
-        // Firebase Setup
-        const firebaseConfig = {
+        // Firebase Config
+        const fbCnf = {
             apiKey: "AIzaSyB8dMNauskCHpHE-XrndD5PVK0AnKLF62c",
             authDomain: "viral-link-eec17.firebaseapp.com",
             databaseURL: "https://viral-link-eec17-default-rtdb.firebaseio.com",
@@ -124,48 +145,39 @@
             messagingSenderId: "191992962827",
             appId: "1:191992962827:web:1ad8fdc593aa65a47ecc0e"
         };
-        firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(fbCnf);
         const database = firebase.database();
-
         const urlParams = new URLSearchParams(window.location.search);
-        const videoId = urlParams.get('v');
-        const videoContainer = document.getElementById("video-container");
+        const vidId = urlParams.get('v');
+        const vCn = document.getElementById("v-cont-77");
 
-        function createVideoHTML(video) {
+        function makeVidHTML(v) {
             return `
-                <div class='video-card'>
-                    <h2 class='video-title'>${video.title}</h2>
-                    <div class='video-wrapper'>
-                        <div class='ad-overlay' onclick='startSkipTimer(this)'>
-                            <div class='play-hint'>▶ Click to Play Video</div>
-                            <div class='skip-container'>
-                                <div class='timer-text'>Ad will skip in 10s...</div>
-                                <button class='btn-skip' style='display:none;' onclick='removeOverlay(this)'>Skip Ad ❱❱</button>
+                <div class='v-crd-x7'>
+                    <h2 class='v-tl-st'>${v.title}</h2>
+                    <div class='v-wp-99'>
+                        <div class='v-ly-sm' onclick='startStep(this)'>
+                            <div class='v-pl-bt'>▶ Click to Play Video</div>
+                            <div class='sk-bt-cn'>
+                                <div class='tm-txt'>Ad will skip in 10s...</div>
+                                <button class='sk-ac-bt' style='display:none;' onclick='forceShow(event, this)'>Skip Ad ❱❱</button>
                             </div>
                         </div>
-                        <div class='video-content'>${video.iframeCode}</div>
+                        <div class='v-cnt-box'>${v.iframeCode}</div>
                     </div>
-                    <div class='video-footer'><a class='btn-watch' href='${smartlink}' target='_blank'>Full Screen Link</a></div>
+                    <div class='v-ft-ln'><a class='v-bt-wtch' href='${sLink}' target='_blank'>Full Screen Link</a></div>
                 </div>`;
         }
 
-        if (videoId) {
-            database.ref('videos/' + videoId).once('value', (snapshot) => {
-                videoContainer.innerHTML = ""; 
-                const video = snapshot.val();
-                if (video) {
-                    videoContainer.innerHTML = "<a href='index.html' class='btn-home'>← View All Videos</a>" + createVideoHTML(video);
-                    document.title = video.title;
-                } else {
-                    videoContainer.innerHTML = "<h3>Video not found!</h3>";
-                }
+        if (vidId) {
+            database.ref('videos/' + vidId).once('value', (s) => {
+                vCn.innerHTML = ""; const v = s.val();
+                if (v) { vCn.innerHTML = "<a href='index.html' class='btn-home'>← View All Videos</a>" + makeVidHTML(v); document.title = v.title; } 
+                else { vCn.innerHTML = "<h3>Video Missing!</h3>"; }
             });
         } else {
-            database.ref('videos').on('value', (snapshot) => {
-                videoContainer.innerHTML = ""; 
-                snapshot.forEach((childSnapshot) => {
-                    videoContainer.innerHTML = createVideoHTML(childSnapshot.val()) + videoContainer.innerHTML;
-                });
+            database.ref('videos').on('value', (s) => {
+                vCn.innerHTML = ""; s.forEach((cs) => { vCn.innerHTML = makeVidHTML(cs.val()) + vCn.innerHTML; });
             });
         }
     </script>
